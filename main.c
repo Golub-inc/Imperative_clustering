@@ -15,6 +15,8 @@ int main(void){
         fscanf(inp, "%lf,%lf", &data[i].x, &data[i].y);
     }
     int cl_num_dbscan = dbscan(data, 300, 5, 5);
+    double score_dbscan = silhouette(data, 300, cl_num_dbscan);
+    printf("DBSCAN Silhouette Score: %.4f\n", score_dbscan);
     P* cents_dbscan = centroid(data, 300, cl_num_dbscan);
     FILE* gp1 = popen("gnuplot -persist", "w");
     fprintf(gp1, "set title 'DBSCAN: Точки и Центроиды'\n");
@@ -23,7 +25,7 @@ int main(void){
     fprintf(gp1, "set grid\n");
     fprintf(gp1, "set pointsize 1.5\n");
     fprintf(gp1, "plot '-' using 1:2:3 with points pt 7 ps 1.2 palette title 'Data Points', \\\n");
-    fprintf(gp1, "     '-' using 1:2 with points pt 4 ps 3.0 lc rgb 'red' lw 2 title 'Centroids'\n");
+    fprintf(gp1, "     '-' using 1:2 with points pt 4 ps 3.0 lc rgb 'green' lw 2 title 'Centroids'\n");
     for (int i = 0; i < 300; i++) {
         fprintf(gp1, "%.4f %.4f %d\n", data[i].x, data[i].y, data[i].cluster);
     }
@@ -43,6 +45,8 @@ int main(void){
     for (int i = 0; i < 300; i++) data_kmeans[i].cluster = 0;
     int k_clusters = 3;
     P* cents_kmeans = kmeans(data_kmeans, 300, k_clusters);
+    double score_kmeans = silhouette(data_kmeans, 300, k_clusters);
+    printf("K-Means (k=%d) Silhouette Score: %.4f\n", k_clusters, score_kmeans);
     FILE* gp2 = popen("gnuplot -persist", "w");
     fprintf(gp2, "set title 'K-Means: Точки и Центроиды'\n");
     fprintf(gp2, "set xlabel 'x'\n");
@@ -50,7 +54,7 @@ int main(void){
     fprintf(gp2, "set grid\n");
     fprintf(gp2, "set pointsize 1.5\n");
     fprintf(gp2, "plot '-' using 1:2:3 with points pt 7 ps 1.2 palette title 'Data Points', \\\n");
-    fprintf(gp2, "     '-' using 1:2 with points pt 4 ps 3.0 lc rgb 'blue' lw 2 title 'Centroids'\n");
+    fprintf(gp2, "     '-' using 1:2 with points pt 4 ps 3.0 lc rgb 'green' lw 2 title 'Centroids'\n");
     for (int i = 0; i < 300; i++) {
         fprintf(gp2, "%.4f %.4f %d\n", data_kmeans[i].x, data_kmeans[i].y, data_kmeans[i].cluster);
     }
