@@ -1,6 +1,5 @@
 #include "clustering.h"
 #include <stdlib.h>
-#include <math.h>
 typedef struct queue{
     int val;
     struct queue *next;
@@ -12,7 +11,7 @@ Q* queue(int val, Q *end) {
     end->next = temp;
     return temp;
 }
-void dbscan(P* dat, int len, int minPts, double R) {
+int dbscan(P* dat, int len, int minPts, double R) {
     double R_sq = R * R;
     int cluster_id = 1;
     for (int i = 0; i < len; i++) {
@@ -47,4 +46,5 @@ void dbscan(P* dat, int len, int minPts, double R) {
         }
         cluster_id++;
     }
+    return cluster_id-1;
 }
