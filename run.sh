@@ -15,8 +15,8 @@ elif [[ ! -f "$FILE" ]]; then
   echo "Файл не найден: $FILE"
   exit 1
 fi
-if [[ $# -ge 4 ]]; then
-  echo -e "$2\n$3\n$4" | "$APP" "$FILE"
+if [[ $# -ge 6 ]]; then
+  echo -e "$2\n$3\n$4\n$5\n$6" | "$APP" "$FILE"
 else
   "$APP" "$FILE"
 fi

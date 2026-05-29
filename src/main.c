@@ -4,7 +4,8 @@
 #include <string.h>
 int main(int argc, char* argv[]) {
     char filename[256];
-    int point_num, cl_num, dim;
+    int point_num, cl_num, dim, min_pts;
+    double radius;
     if (argc > 1) {
         strncpy(filename, argv[1], sizeof(filename) - 1);
         filename[sizeof(filename) - 1] = '\0';
@@ -14,10 +15,14 @@ int main(int argc, char* argv[]) {
     }
     printf("input number of points\n");
     scanf("%d",&point_num);
-    printf("input number of clusters\n");
-    scanf("%d",&cl_num);
     printf("input number of dimetions\n");
     scanf("%d",&dim);
+    printf("input number of clusters\n");
+    scanf("%d",&cl_num);
+    printf("input DBSCAN radius\n");
+    scanf("%lf", &radius);
+    printf("input DBSCAN min points\n");
+    scanf("%d", &min_pts);
     P*data;
     FILE* inp = fopen(filename, "r");
     if(dim==2){
@@ -41,7 +46,7 @@ int main(int argc, char* argv[]) {
         printf("unsupported");
         exit(0);
     }
-    int cl_num_dbscan = dbscan(data, point_num, 5, 2);
+    int cl_num_dbscan = dbscan(data, point_num, min_pts, radius);
     double score_dbscan = silhouette(data, point_num, cl_num_dbscan);
     printf("DBSCAN Silhouette Score: %.4f\n", score_dbscan);
     P* cents_dbscan = centroid(data, point_num, cl_num_dbscan);
