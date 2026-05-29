@@ -3,18 +3,22 @@
 #include <stdlib.h>
 #include <string.h>
 int main(void){
-    FILE* inp = fopen("data.csv", "r");
-    if (!inp) {
-        perror("Не удалось открыть data.csv");
-        return 1;
-    }
+    /*FILE* inp = fopen("data.csv", "r");
     P* data = calloc(300, sizeof(P));
     char trash;
     fscanf(inp, "%c,%c", &trash, &trash);
     for (size_t i = 0; i < 300; i++) {
         fscanf(inp, "%lf,%lf", &data[i].x, &data[i].y);
+    }*/
+    FILE* inp = fopen("data_3d.csv", "r");
+    P3D* dat = calloc(300, sizeof(P));
+    char trash;
+    fscanf(inp, "%c,%c,%c", &trash, &trash, &trash);
+    for (size_t i = 0; i < 300; i++) {
+        fscanf(inp, "%lf,%lf,%lf", &dat[i].x, &dat[i].y,&dat[i].z);
     }
-    int cl_num_dbscan = dbscan(data, 300, 5, 5);
+    P*data=pca(dat,300);
+    int cl_num_dbscan = dbscan(data, 300, 5, 2);
     double score_dbscan = silhouette(data, 300, cl_num_dbscan);
     printf("DBSCAN Silhouette Score: %.4f\n", score_dbscan);
     P* cents_dbscan = centroid(data, 300, cl_num_dbscan);
