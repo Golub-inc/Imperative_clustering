@@ -2,8 +2,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-int main(void){
-    int point_num,cl_num,dim;
+int main(int argc, char* argv[]) {
+    char filename[256];
+    int point_num, cl_num, dim;
+    if (argc > 1) {
+        strncpy(filename, argv[1], sizeof(filename) - 1);
+        filename[sizeof(filename) - 1] = '\0';
+    } else {
+        printf("Enter CSV filename: ");
+        scanf("%255s", filename);
+    }
     printf("input number of points\n");
     scanf("%d",&point_num);
     printf("input number of clusters\n");
@@ -11,8 +19,8 @@ int main(void){
     printf("input number of dimetions\n");
     scanf("%d",&dim);
     P*data;
+    FILE* inp = fopen(filename, "r");
     if(dim==2){
-        FILE* inp = fopen("data.csv", "r");
         data = calloc(point_num, sizeof(P));
         char trash;
         fscanf(inp, "%c,%c", &trash, &trash);
@@ -21,7 +29,6 @@ int main(void){
         }
     }
     else if(dim==3){
-        FILE* inp = fopen("data_3d.csv", "r");
         P3D* dat = calloc(point_num, sizeof(P));
         char trash;
         fscanf(inp, "%c,%c,%c", &trash, &trash, &trash);
